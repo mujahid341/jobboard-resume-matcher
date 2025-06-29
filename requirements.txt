@@ -3,4 +3,5 @@ python-docx
 chardet
 spacy
 scikit-learn
+flask
 
