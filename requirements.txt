@@ -1,0 +1,6 @@
+pdfminer.six
+python-docx
+chardet
+spacy
+scikit-learn
+

@@ -1,0 +1,6 @@
+job_id,title,description
+1,Java Developer,"Java, Spring Boot, SQL, REST APIs"
+2,ML Engineer,"Python, NLP, Scikit-learn, Transformers"
+3,Frontend Developer,"React, JavaScript, HTML, CSS, UI/UX"
+4,DevOps Engineer,"Docker, Kubernetes, AWS, Jenkins, CI/CD"
+5,Data Analyst,"Excel, SQL, Python, Data Visualization, Pandas"
