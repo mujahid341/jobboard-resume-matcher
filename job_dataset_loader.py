@@ -1,33 +1,24 @@
-import csv
+import requests
 
-def load_jobs(file_path="jobs.csv"):  # ✅ Default file path added
+def load_jobs(api_url="http://localhost:8081/api/jobboard/job/all/public"):
     """
-    Loads job data from a CSV file.
-    If no file_path is provided, it defaults to 'jobs.csv'.
+    Fetches job data from the Job Board Spring Boot API instead of a CSV file.
+    Returns a list of job dictionaries with job_id, title, and description.
     """
-    jobs = []
     try:
-        with open(file_path, newline='', encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                job = {
-                    'job_id' : int(row['job_id']),
-                    'title' : row['title'].strip(),
-                    'description' : row['description'].strip().lower()
-                }
-                jobs.append(job)
-    except FileNotFoundError:
-        print(f"❌ File not found: {file_path}")
-    return jobs
+        response = requests.get(api_url)
+        response.raise_for_status()
+        job_data = response.json()
 
+        jobs = []
+        for job in job_data:
+            jobs.append({
+                'job_id': job.get('id'),  # Assuming job['id'] is a string UUID
+                'title': job.get('title', '').strip(),
+                'description': job.get('description', '').strip().lower()
+            })
+        return jobs
 
-# ✅ Test block for local script testing
-if __name__ == "__main__":
-    test_file = "jobs.csv"  # Make sure this file exists in the same folder
-    print(f"📂 Reading file: {test_file}")
-
-    jobs = load_jobs(test_file)
-
-    for job in jobs:
-        print(f"✅ Job ID: {job['job_id']}, Title: {job['title']}")
-        print(f"📝 Description: {job['description'][:100]}...\n")
+    except requests.RequestException as e:
+        print(f"❌ Failed to fetch jobs from API: {e}")
+        return []
